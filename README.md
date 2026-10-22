@@ -75,3 +75,6 @@ Open http://localhost:8080 after starting the app. No Node/npm needed and no ext
 | 403 page | `/error/403.html` |
 
 Quick demo: log in as admin -> create a teacher, a student and a class (assign teacher, enroll student) -> log in as the teacher in one browser and the student in another (or a private window) -> teacher clicks "Start live class" -> student clicks "Join live class".
+
+Live Demo Link :
+https://virtual-classroom-620k.onrender.com
