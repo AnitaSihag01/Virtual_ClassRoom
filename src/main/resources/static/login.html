@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · Virtual Classroom</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%237c6cff'/%3E%3Ctext x='16' y='21' font-size='14' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EVC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="card auth-card">
+    <a class="back-link" href="/">← Choose another role</a>
+    <div class="logo">VC</div>
+    <h2 id="title">Sign in</h2>
+    <p class="muted" id="sub" style="margin:6px 0 22px">Enter your credentials.</p>
+    <form class="form" id="form">
+      <div id="err" class="error-box" hidden></div>
+      <label class="field"><span>Email</span><input type="email" id="email" required autocomplete="username" placeholder="you@college.edu"></label>
+      <label class="field"><span>Password</span>
+        <div class="pw"><input type="password" id="pw" required autocomplete="current-password" placeholder="••••••••">
+        <button type="button" class="icon-btn" id="eye" tabindex="-1" title="Show password"></button></div></label>
+      <button class="btn primary block" id="go" type="submit">Sign in</button>
+    </form>
+  </div>
+</div>
+<script src="/js/common.js"></script>
+<script>
+const role = (new URLSearchParams(location.search).get('role') || '').toUpperCase();
+if (!['ADMIN','TEACHER','STUDENT'].includes(role)) location.href = '/';
+const names = { ADMIN: 'Admin', TEACHER: 'Teacher', STUDENT: 'Student' };
+$('#title').textContent = names[role] + ' sign in';
+$('#sub').textContent = role === 'ADMIN' ? 'Manage the whole platform.' : role === 'TEACHER' ? 'Host and manage your live classes.' : 'Join your classes and sessions.';
+document.title = names[role] + ' sign in · Virtual Classroom';
+$('#eye').innerHTML = icon('eye');
+$('#eye').onclick = () => { const p = $('#pw'); const show = p.type === 'password'; p.type = show ? 'text' : 'password'; $('#eye').innerHTML = icon(show ? 'eyeoff' : 'eye'); };
+$('#form').onsubmit = async e => {
+  e.preventDefault();
+  const btn = $('#go'), err = $('#err'); err.hidden = true; btn.disabled = true; btn.textContent = 'Signing in…';
+  try {
+    const u = await api('/api/auth/login', { method: 'POST', noRedirect: true, silent: true, body: { email: $('#email').value, password: $('#pw').value, role } });
+    location.href = u.mustChangePassword ? '/change-password.html' : homeFor(u.role);
+  } catch (ex) {
+    err.textContent = ex.network ? 'Cannot reach the server.' : ex.message; err.hidden = false;
+    btn.disabled = false; btn.textContent = 'Sign in';
+  }
+};
+</script>
+</body></html>

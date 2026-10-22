@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live class · Virtual Classroom</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%237c6cff'/%3E%3Ctext x='16' y='21' font-size='14' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EVC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="room-page">
+<header id="topbar"></header>
+<div class="room">
+  <section class="board-col">
+    <div class="toolbar" id="toolbar">
+      <div class="group drawing"><button class="tool active" id="penTool" title="Pen"></button><button class="tool" id="eraserTool" title="Eraser"></button></div>
+      <div class="sep"></div>
+      <div class="group drawing" id="swatches"></div>
+      <div class="sep"></div>
+      <div class="group drawing"><span class="muted small">Thickness</span><input type="range" id="size" min="1" max="24" value="4"><span class="small muted" id="sizeVal" style="width:18px">4</span></div>
+      <div class="spacer"></div>
+      <span class="lock-note" id="lockNote"></span>
+      <div class="group" id="teacherTools"></div>
+    </div>
+    <div class="stage-wrap"><div class="stage"><canvas id="board"></canvas></div></div>
+  </section>
+  <aside class="side">
+    <div class="panel video">
+      <div class="video-box">
+        <video id="liveVideo" autoplay playsinline muted></video>
+        <div class="video-msg" id="videoMsg">Waiting for the teacher's video…</div>
+      </div>
+      <div class="video-bar" id="videoBar"></div>
+    </div>
+    <div class="panel people"><div class="panel-head"><span>People in room</span><span class="badge" id="count">0</span></div><div class="panel-body" id="people"></div></div>
+    <div class="panel chat">
+      <div class="panel-head"><span>Chat</span><span id="chatTools"></span></div>
+      <div class="panel-body msgs" id="msgs"></div>
+      <form class="composer" id="composer"><input id="chatInput" placeholder="Type a message…" maxlength="1000" autocomplete="off"><button class="btn primary" id="sendBtn" type="submit" title="Send"></button></form>
+    </div>
+  </aside>
+</div>
+<script src="/js/common.js"></script>
+<script src="/js/stomp-lite.js"></script>
+<script src="/js/room.js"></script>
+</body></html>
